@@ -1,0 +1,14 @@
+"errorCode": "Client.InvalidParameterValue",
+    "errorMessage": "Value (eks-7ac3e97b-35a8-291b-9886-d6ff10e1ada7) for parameter iamInstanceProfile.name is invalid. Invalid IAM Instance Profile name",
+    eks-50c3ea70-3bb1-185c-aacd-4c096d4c2e38
+
+
+    resource "aws_security_group_rule" "eks_sg_ingress_rule" {
+        cidr_blocks = [ var.cidr_block ]
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+      
+        security_group_id = aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id
+        type              = "ingress"
+      }
