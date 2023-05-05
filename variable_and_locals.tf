@@ -24,7 +24,7 @@ variable "subnet_public_access_tags" {
 }
 variable "cluster-name" {
     type = string
-    default = "eks_airflow"
+    default = "eks-airflow"
   
 }
 variable "region" {
