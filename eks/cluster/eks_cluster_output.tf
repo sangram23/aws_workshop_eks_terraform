@@ -16,3 +16,6 @@ output "eks_cluster_endpoint" {
 output "eks_cluster_certificate_authority_data" {
   value=aws_eks_cluster.eks_cluster.certificate_authority[0].data
 }
+output "eks_cluster_oidc_provider_issuer" {
+  value=aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+}

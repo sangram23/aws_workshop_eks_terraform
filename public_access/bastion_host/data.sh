@@ -22,6 +22,7 @@
   pip3 install --upgrade --user awscli
   sudo mv /usr/bin/aws /usr/bin/aws.bkp
   sudo ln -s /home/ec2-user/.local/bin/aws /usr/bin/aws
+  #aws eks update-kubeconfig --region us --name my-cluster
   
   sudo yum install squid -y
   sudo chkconfig squid on
@@ -29,3 +30,9 @@
   #cat "acl all src 0.0.0.0/0" >> /etc/squid/squid.conf
   #http_access allow all
  #aws eks update-kubeconfig --region us-east-1 --name eks_airflow
+ #mkdir -p /etc/systemd/system/docker.service.d
+  /etc/systemd/system/docker.service.d/http-proxy.conf
+# [Service]
+# Environment="HTTP_PROXY=http://10.0.1.45:3128"
+# Environment="HTTPS_PROXY=http://10.0.1.45:3128"
+# systemctl daemon-reload
