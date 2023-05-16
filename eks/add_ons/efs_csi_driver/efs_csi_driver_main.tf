@@ -93,24 +93,24 @@ resource "aws_iam_role" "efs_csi_controller_iam_role" {
   #permissions_boundary = var.permissions_boundary_arn
   description = "IAM role for the EFS CSI controller for the ${var.cluster_name} cluster."
   assume_role_policy = jsonencode(
-    {
-      Statement = [
+  {
+    "Version": "2012-10-17",
+    "Statement": [
         {
-          Action = "sts:AssumeRoleWithWebIdentity",
-          Condition = {
-            StringEquals = {
-              "${var.oidc_provider}:sub" = "system:serviceaccount:default:${var.serviceaccount_name}"
+            "Sid": "efcCsiControllerAccount",
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": var.iam_oidc_connect_provider_arn
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "${var.oidc_provider}:sub": "system:serviceaccount:default:${var.serviceaccount_name}"
+                }
             }
-          }
-          Effect = "Allow"
-          Principal = {
-            Federated = var.iam_oidc_connect_provider_arn
-          }
-          Sid = "efcCsiControllerAccount"
-        },
-      ] 
-      Version = "2012-10-17"
-    }
+        }
+    ]
+}
   )
   #tags = merge(module.cluster_tags.tags, local.tags, var.extra_tags)
 }
@@ -119,24 +119,27 @@ resource "aws_iam_role_policy" "efs_csi_controller_iam_policy" {
   role = aws_iam_role.efs_csi_controller_iam_role.id
   policy = jsonencode(
     {
-      Statement = [
+    "Version": "2012-10-17",
+    "Statement": [
         {
-          Action = [
-            "elasticfilesystem:DescribeFileSystems",
-            "elasticfilesystem:DescribeAccessPoints",
-            "elasticfilesystem:DeleteAccessPoint",
-            "elasticfilesystem:CreateAccessPoint"
-          ]
-          Effect = "Allow"
-          Resource = [ 
-            aws_efs_file_system.efs_fs.arn,
-            "arn:aws:elasticfilesystem:${var.aws_region}:${var.aws_account_id}:access-point/*"
-          ]
-          Sid = "efsCsiControllerOwn"
-        },
-      ]
-      Version = "2012-10-17"
-    }
+            "Action": [
+                "elasticfilesystem:DescribeFileSystems",
+                "elasticfilesystem:DescribeAccessPoints",
+                "elasticfilesystem:DeleteAccessPoint",
+                "elasticfilesystem:CreateAccessPoint",
+                "elasticfilesystem:DescribeMountTargets",
+                "ec2:DescribeAvailabilityZones",
+                "elasticfilesystem:TagResource"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:elasticfilesystem:us-east-1:107457029648:file-system/fs-0df77c25e3d12eea6",
+                "arn:aws:elasticfilesystem:us-east-1:107457029648:access-point/*"
+            ],
+            "Sid": "efsCsiControllerOwn"
+        }
+    ]
+}
   )
 }
 

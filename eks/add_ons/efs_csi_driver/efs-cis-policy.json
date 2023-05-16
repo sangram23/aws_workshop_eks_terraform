@@ -1,0 +1,22 @@
+{
+    Statement = [
+      {
+        Action = [
+          "elasticfilesystem:DescribeFileSystems",
+          "elasticfilesystem:DescribeAccessPoints",
+          "elasticfilesystem:DeleteAccessPoint",
+          "elasticfilesystem:CreateAccessPoint",
+          "elasticfilesystem:DescribeMountTargets",
+          "ec2:DescribeAvailabilityZones",
+          "elasticfilesystem:TagResource"            
+        ]
+        Effect = "Allow"
+        Resource = [ 
+          aws_efs_file_system.efs_fs.arn,
+          "arn:aws:elasticfilesystem:${var.aws_region}:${var.aws_account_id}:access-point/*"
+        ]
+        Sid = "efsCsiControllerOwn"
+      },
+    ]
+    Version = "2012-10-17"
+  }

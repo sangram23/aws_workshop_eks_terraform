@@ -64,4 +64,12 @@ resource "aws_security_group_rule" "eks_cluster_sg_443" {
   cidr_blocks = ["10.0.0.0/16"]
   security_group_id = aws_security_group.eks_cluster_sg.id
 }
+resource "aws_security_group_rule" "eks_cluster_sg_22" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks = ["10.0.0.0/16"]
+  security_group_id = aws_security_group.eks_cluster_sg.id
+}
 

@@ -29,10 +29,13 @@
   sudo service squid start
   #cat "acl all src 0.0.0.0/0" >> /etc/squid/squid.conf
   #http_access allow all
- #aws eks update-kubeconfig --region us-east-1 --name eks_airflow
+ #aws eks update-kubeconfig --region us-east-1 --name eks-airflow
  #mkdir -p /etc/systemd/system/docker.service.d
   /etc/systemd/system/docker.service.d/http-proxy.conf
 # [Service]
-# Environment="HTTP_PROXY=http://10.0.1.45:3128"
-# Environment="HTTPS_PROXY=http://10.0.1.45:3128"
+# Environment="HTTP_PROXY=http://10.0.1.242:3128"
+# Environment="HTTPS_PROXY=http://10.0.1.242:3128"
 # systemctl daemon-reload
+http
+oidc.eks.us-east-1.amazonaws.com/id/098D25162B91006FA3BF0368CEAAE106
+oidc.eks.us-east-1.amazonaws.com/id/098D25162B91006FA3BF0368CEAAE106

@@ -295,3 +295,29 @@ resource "aws_vpc_endpoint" "vpce-sts" {
 
   timeouts {}
 }
+
+
+resource "aws_vpc_endpoint" "vpce-efsfilesystem" {
+  policy = jsonencode(
+    {
+      Statement = [
+        {
+          Action    = "*"
+          Effect    = "Allow"
+          Principal = "*"
+          Resource  = "*"
+        },
+      ]
+    }
+  )
+  private_dns_enabled = true
+  route_table_ids     = []
+  security_group_ids = var.security_group_ids
+  service_name = format("com.amazonaws.%s.elasticfilesystem",var.region)
+  subnet_ids = var.subnet_ids
+  tags              = {}
+  vpc_endpoint_type = "Interface"
+  vpc_id            = var.vpc_id 
+
+  timeouts {}
+}
